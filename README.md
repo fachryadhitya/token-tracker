@@ -1,99 +1,123 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Blockchain Price Tracker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS application that tracks Ethereum and Polygon prices on mainnet, with automated price alerts and email notifications.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- Automatically tracks ETH and POLYGON prices every 5 minutes
+- Email notifications for significant price changes (>3% in an hour)
+- Custom price alerts via API
+- Hourly price history for the last 24 hours
+- Swagger API documentation
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Project setup
+- Docker and Docker Compose
+- Moralis API key (contact me if you need one)
+- SMTP credentials (for email notifications)
 
+## Supported Tokens
+
+This project currently only supports mainnet tokens:
+- Ethereum (ETH)
+- Polygon (MATIC)
+
+## Getting Started
+
+1. Clone the repository:
 ```bash
-$ pnpm install
+git clone [repository-url]
+cd blockchain-price-tracker
 ```
 
-## Compile and run the project
-
+2. Create and configure your environment variables:
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
+Required environment variables:
+```env
+# Server Configuration
+PORT=5000
+DB_PORT=5432
 
-```bash
-# unit tests
-$ pnpm run test
+# Database Configuration
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB=pricetracker
 
-# e2e tests
-$ pnpm run test:e2e
+# Moralis API
+MORALIS_API_KEY=your_moralis_api_key  # Contact me if you need one
 
-# test coverage
-$ pnpm run test:cov
+# SMTP Configuration (Required for email notifications)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password  # Gmail App Password, not your regular password
 ```
 
-## Deployment
+Note: To enable email notifications, you need to:
+1. Enable 2-Step Verification in your Google Account
+2. Generate an App Password:
+   - Go to Google Account Settings → Security
+   - Under "2-Step Verification", find "App passwords"
+   - Generate a password and use it as SMTP_PASS
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+3. Run the application:
 ```bash
-$ pnpm install -g mau
-$ mau deploy
+docker compose up --build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The application will be available at:
+- API: http://localhost:5000
+- Swagger Documentation: http://localhost:5000/api
 
-## Resources
+## API Endpoints
 
-Check out a few resources that may come in handy when working with NestJS:
+Visit the Swagger documentation at `http://localhost:5000/api` for detailed API documentation. Key endpoints include:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+1. Price History:
+   ```
+   GET /prices/{chain}
+   ```
+   Returns hourly prices for the last 24 hours
 
-## Support
+2. Price Alerts:
+   ```
+   POST /alerts
+   ```
+   Set price alerts with email notifications
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Example alert request:
+```json
+{
+  "chain": "ethereum",
+  "targetPrice": 2000,
+  "email": "your.email@example.com"
+}
+```
 
-## Stay in touch
+## Architecture
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- NestJS framework
+- PostgreSQL database
+- Moralis API for real-time price data
+- Nodemailer for email notifications
+- Docker containerization
 
-## License
+## Limitations
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- Assumes only mainnet
+- Assumes only ETH and POLYGON tokens
+
+## Troubleshooting
+
+1. Email sending fails:
+   - Verify SMTP credentials
+   - Ensure you're using an App Password, not regular Gmail password
+   - Check if 2-Step Verification is enabled
+
+2. Price tracking not working:
+   - Verify Moralis API key
+   - Check network connectivity
+   - Ensure Docker containers are running
