@@ -3,25 +3,26 @@ services:
   app:
     build: .
     ports:
-      - "5000:5000"
+      - "${PORT:-5000}:${PORT:-5000}"
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/pricetracker
-      - MORALIS_API_KEY=your_moralis_api_key
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_USER=your_email
-      - SMTP_PASS=your_email_password
+      - PORT=${PORT:-5000}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pricetracker}
+      - MORALIS_API_KEY=${MORALIS_API_KEY}
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
     depends_on:
       - db
   
   db:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=pricetracker
+      - POSTGRES_USER=${POSTGRES_USER:-user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-pricetracker}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

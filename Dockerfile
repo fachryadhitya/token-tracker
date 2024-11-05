@@ -1,13 +1,33 @@
-FROM node:18
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+# Install pnpm
+RUN npm install -g pnpm
 
-RUN npm install
+# Copy package files
+COPY package*.json pnpm-lock.yaml ./
 
+# Install all dependencies (including devDependencies needed for build)
+RUN pnpm install
+
+# Copy source code
 COPY . .
 
-RUN npm run build
+# Build the application
+RUN pnpm run build
 
-CMD ["npm", "run", "start:prod"]
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json pnpm-lock.yaml ./
+
+# Copy only the built files from builder stage
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+
+# Define the command to run the application
+CMD ["node", "dist/main"]
