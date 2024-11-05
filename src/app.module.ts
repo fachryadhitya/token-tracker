@@ -22,9 +22,9 @@ import configuration from './config/configuration';
       synchronize: true,
     }),
     ScheduleModule.forRoot(),
-    MailModule,    // Import MailModule first
+    MailModule,    
     PriceModule,
-    AlertModule,   // Uncommented AlertModule
+    AlertModule,   
   ],
 })
 export class AppModule {}
